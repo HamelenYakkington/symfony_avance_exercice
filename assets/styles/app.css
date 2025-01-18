@@ -1,3 +1,4 @@
-body {
-    background-color: skyblue;
+.flash-Alert > .btn-close {
+    border: none;
+    background-color: transparent;
 }

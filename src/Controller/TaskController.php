@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
+use App\Security\Voter\TaskVoter;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -42,6 +43,11 @@ final class TaskController extends AbstractController
         if($task == null) {
             throw new NotFoundHttpException('An error occured : The task doesn\'t exist.');
         }
+
+        if (!$this->isGranted(TaskVoter::VIEW, $task)) {
+            $this->addFlash('danger', 'You don\'t have the permissions to consult this task');
+            return $this->redirectToRoute('task_index');
+        }
         
         return $this->render('task/view.html.twig', [
             'controller_name' => 'TaskController',
@@ -65,7 +71,8 @@ final class TaskController extends AbstractController
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
                 
-                $this->addFlash("success", "The task gets updated successfully");
+                $this->addFlash("success", "The task gets created successfully");
+                return $this->redirectToRoute("task_index");
             } else {
                 $this->addFlash("error", "An Error occured during the taks's update");
             }
@@ -85,6 +92,11 @@ final class TaskController extends AbstractController
         $task = $taskRepository->findOneBySlug($slug);
         if($task == null) {
             throw new NotFoundHttpException('An error occured : The task doesn\'t exist.');
+        }
+
+        if (!$this->isGranted(TaskVoter::EDIT, $task)) {
+            $this->addFlash('danger', 'You don\'t have the permissions to edit this task');
+            return $this->redirectToRoute('task_index');
         }
 
         $form = $this->createForm(TaskType::class, $task);
@@ -120,6 +132,12 @@ final class TaskController extends AbstractController
             throw new NotFoundHttpException('An error occured : The task doesn\'t exist.');
         }
 
+        if (!$this->isGranted(TaskVoter::DELETE, $task)) {
+            $this->addFlash('danger', 'You don\'t have the permissions to delete this task');
+            return $this->redirectToRoute('task_index');
+        }
+
+        $this->addFlash("success", "The task gets deleted successfully");
         $this->entityManager->remove($task);
         $this->entityManager->flush();
 
