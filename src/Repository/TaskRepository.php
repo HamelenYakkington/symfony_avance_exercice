@@ -40,4 +40,8 @@ class TaskRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    public function findOneBySlug(String $slug): ?Task {
+        return $this->findOneBy(["slug" => $slug]);
+    }
 }

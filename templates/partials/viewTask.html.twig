@@ -1,0 +1,20 @@
+{% if task is defined %}
+	<tr class="table-light">
+		<th scope="row">{{ task.name }}</th>
+		<td>{{ task.author.email }}</td>
+		<td class="d-none d-sm-block">{{ task.desciption|u.truncate(15, '...') }}</td>
+		<td>
+			<a href="/task/view/{{ task.slug }}" class="text-primary me-2" title="View">
+				<i class="material-icons">visibility</i>
+			</a>
+
+			<a href="/task/edit/{{ task.slug }}" class="text-warning me-2" title="Edit">
+				<i class="material-icons">edit</i>
+			</a>
+
+			<a href="/task/delete/{{ task.slug }}" class="text-danger" title="Delete">
+				<i class="material-icons">delete</i>
+			</a>
+		</td>
+	</tr>
+{% endif %}

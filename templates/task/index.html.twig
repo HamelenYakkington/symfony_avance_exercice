@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task Manager
+{% endblock %}
+
+{% block body %}
+<div class="row align-items-center">
+    <div class="col d-flex justify-content-start">
+        <h2>Task's List</h2>
+    </div>
+    <div class="col d-flex justify-content-end">
+        <a href="/task/create" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Create a New Task
+        </a>
+    </div>
+</div>
+
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th scope="col">Task's Name</th>
+				<th scope="col">Author</th>
+				<th scope="col" class="d-none d-sm-block">Description</th>
+				<th scope="col">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for task in tasks %}
+				{% include 'partials/viewTask.html.twig' %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
