@@ -3,13 +3,15 @@
 namespace App\Entity;
 
 use App\Repository\TaskRepository;
-use Doctrine\DBAL\Types\Types;
+use App\Traits\TimestampableTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation\Slug;
 
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
+    use TimestampableTrait;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -20,12 +22,6 @@ class Task
 
     #[ORM\Column(length: 500)]
     private ?string $desciption = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTimeInterface $createDt = null;
-
-    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $updateDt = null;
 
     #[ORM\ManyToOne(inversedBy: 'tasks')]
     #[ORM\JoinColumn(nullable: false)]
@@ -60,30 +56,6 @@ class Task
     public function setDesciption(string $desciption): static
     {
         $this->desciption = $desciption;
-
-        return $this;
-    }
-
-    public function getCreateDt(): ?\DateTimeInterface
-    {
-        return $this->createDt;
-    }
-
-    public function setCreateDt(\DateTimeInterface $createDt): static
-    {
-        $this->createDt = $createDt;
-
-        return $this;
-    }
-
-    public function getUpdateDt(): ?\DateTimeInterface
-    {
-        return $this->updateDt;
-    }
-
-    public function setUpdateDt(?\DateTimeInterface $updateDt): static
-    {
-        $this->updateDt = $updateDt;
 
         return $this;
     }

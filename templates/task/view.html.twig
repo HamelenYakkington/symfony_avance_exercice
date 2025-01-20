@@ -1,21 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Task Manager{% endblock %}
+{% block title %}Task Manager
+{% endblock %}
 
 {% block body %}
-    {% if task is defined %}
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Task's Name</th>
-      <th scope="col">Author</th>
-      <th scope="col d-none d-sm-block">Description</th>
-    </tr>
-  </thead>
-  <tbody>
-        {% include 'partials/viewTask.html.twig' %}
-  </tbody>
-</table>
-    {% endif %}
-
+	{% if task is defined %}
+		<div>
+			{{ task.name }}
+		</div>
+		<div>
+			{{ task.desciption }}
+		</div>
+		<div>
+			{{ task.author.email }}
+		</div>
+		<div>
+			{{ task.createDt|date('Y-m-d H:i:s') }}
+		</div>
+		<div>
+			{{ task.updateDt|date('Y-m-d H:i:s') }}
+		</div>
+	{% endif %}
 {% endblock %}

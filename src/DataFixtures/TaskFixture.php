@@ -18,13 +18,13 @@ class TaskFixture extends Fixture implements DependentFixtureInterface
         $task1 = new Task();
         $task1->setName("task1");
         $task1->setDesciption("Lorem Ipsum");
-        $task1->setCreateDt(new DateTime());
+        $task1->updateTimestamps();
         $task1->setAuthor($user);
 
         $task2 = new Task();
         $task2->setName("task2");
         $task2->setDesciption("Lorem Ipsum");
-        $task2->setCreateDt(new DateTime());
+        $task2->updateTimestamps();
         $task2->setAuthor($user);
 
         $manager->persist($task1);

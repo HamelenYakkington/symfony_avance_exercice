@@ -66,7 +66,7 @@ final class TaskController extends AbstractController
         if ($form->isSubmitted()) {
             if($form->isValid()){
 
-                $task->setCreateDt(new DateTime());
+                $task->updateTimestamps();
 
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
@@ -105,7 +105,7 @@ final class TaskController extends AbstractController
         if ($form->isSubmitted()) {
             if($form->isValid()){
 
-                $task->setUpdateDt(new DateTime());
+                $task->updateTimestamps();
 
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
