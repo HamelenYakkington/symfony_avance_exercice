@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use App\Security\Voter\TaskVoter;
+use App\Service\TaskService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,9 +20,11 @@ use Symfony\Component\Routing\Attribute\Route;
 final class TaskController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private TaskService $taskService;
 
-    public function __construct(EntityManagerInterface $entityManager) {
+    public function __construct(EntityManagerInterface $entityManager, TaskService $taskService) {
         $this->entityManager = $entityManager;
+        $this->taskService = $taskService;
     }
 
 
@@ -96,6 +99,11 @@ final class TaskController extends AbstractController
 
         if (!$this->isGranted(TaskVoter::EDIT, $task)) {
             $this->addFlash('danger', 'You don\'t have the permissions to edit this task');
+            return $this->redirectToRoute('task_index');
+        }
+
+        if (!$this->taskService->canEdit($task)) {
+            $this->addFlash('danger', 'This task can\'t being edited');
             return $this->redirectToRoute('task_index');
         }
 

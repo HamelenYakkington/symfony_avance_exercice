@@ -27,8 +27,18 @@ class TaskFixture extends Fixture implements DependentFixtureInterface
         $task2->updateTimestamps();
         $task2->setAuthor($user);
 
+        $dateTask3 = new DateTime();
+        $dateTask3->modify('-10 days');
+
+        $task3 = new Task();
+        $task3->setName("task3");
+        $task3->setDesciption("Lorem Ipsum");
+        $task3->setcreateDt($dateTask3);
+        $task3->setAuthor($user);
+
         $manager->persist($task1);
         $manager->persist($task2);
+        $manager->persist($task3);
 
         $manager->flush();
     }
