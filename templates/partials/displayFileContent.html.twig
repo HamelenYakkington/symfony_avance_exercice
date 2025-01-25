@@ -1,0 +1,20 @@
+{% if content is defined %}
+	<div class="task">
+		<h4>File:
+			{{ fileName }}</h4>
+		{% if content.id is defined %}
+			<div>{{ content.id }}</div>
+		{% endif %}
+		{% if content.name is defined %}
+			<div>{{ content.name }}</div>
+		{% endif %}
+		{% if content.desc is defined %}
+			<div>{{ content.desc }}</div>
+		{% endif %}
+		{% if actionViewFile is defined %}
+			<a href="/task/viewFile/{{ fileName }}" class="text-primary me-2" title="View">
+				<i class="material-icons">visibility</i>
+			</a>
+		{% endif %}
+	</div>
+{% endif %}

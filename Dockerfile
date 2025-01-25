@@ -31,7 +31,7 @@ COPY . /var/www/symfony
 RUN COMPOSER_ALLOW_SUPERUSER=1 composer install --no-scripts --no-interaction --prefer-dist
 
 # Configurer les permissions
-RUN chown -R www-data:www-data /var/www/symfony
+RUN chown -R www-data:www-data /var/www/symfony/public
 
 # Exposer le port PHP-FPM
 EXPOSE 9000

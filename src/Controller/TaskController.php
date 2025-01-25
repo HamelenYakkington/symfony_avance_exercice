@@ -6,6 +6,7 @@ use App\Entity\Task;
 use App\Form\TaskType;
 use App\Repository\TaskRepository;
 use App\Security\Voter\TaskVoter;
+use App\Service\TaskFileService;
 use App\Service\TaskService;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,10 +22,12 @@ final class TaskController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
     private TaskService $taskService;
+    private TaskFileService $taskFileService;
 
-    public function __construct(EntityManagerInterface $entityManager, TaskService $taskService) {
+    public function __construct(EntityManagerInterface $entityManager, TaskService $taskService, TaskFileService $taskFileService) {
         $this->entityManager = $entityManager;
         $this->taskService = $taskService;
+        $this->taskFileService = $taskFileService;
     }
 
 
@@ -73,6 +76,12 @@ final class TaskController extends AbstractController
 
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
+
+                if($this->taskFileService->FileServiceOnAttribute($task,'FILE_CREATE')) {
+                    $this->addFlash("success", "The save file has been created successfully");
+                } else {
+                    $this->addFlash("warning", "An error occured during the creation of the save file.");
+                }
                 
                 $this->addFlash("success", "The task gets created successfully");
                 return $this->redirectToRoute("task_index");
@@ -118,7 +127,14 @@ final class TaskController extends AbstractController
                 $this->entityManager->persist($task);
                 $this->entityManager->flush();
 
+                if($this->taskFileService->FileServiceOnAttribute($task,'FILE_UPDATE')) {
+                    $this->addFlash("success", "The save file has been updated successfully");
+                } else {
+                    $this->addFlash("warning", "An error occured during the update of the save file.");
+                }
+
                 $this->addFlash("success", "The task gets updated successfully");
+                return $this->redirectToRoute('task_index');
             } else {
                 $this->addFlash("error", "An Error occured during the taks's update");
             }
@@ -145,10 +161,37 @@ final class TaskController extends AbstractController
             return $this->redirectToRoute('task_index');
         }
 
-        $this->addFlash("success", "The task gets deleted successfully");
+        if($this->taskFileService->FileServiceOnAttribute($task,'FILE_DELETE')) {
+            $this->addFlash("success", "The save file has been deleted successfully");
+        } else {
+            $this->addFlash("warning", "An error occured during the delete of the save file.");
+        }
+        
         $this->entityManager->remove($task);
         $this->entityManager->flush();
+        $this->addFlash("success", "The task gets deleted successfully");
+
 
         return $this->redirectToRoute("task_index");
+    }
+
+    #[Route('/listeFile', name: 'task_listeFile')]
+    public function listeFile(): Response
+    {
+        $listeFile = $this->taskFileService->listTasksFiles();
+        return $this->render('task/listeFile.html.twig', [
+            'controller_name' => 'TaskController',
+            'tasks' => $listeFile
+        ]);
+    }
+
+    #[Route('/viewFile/{nameFiles}', name: 'task_nameFiles')]
+    public function viewFile(string $nameFiles): Response
+    {
+        $task = $this->taskFileService->viewTaskFiles($nameFiles);
+        return $this->render('task/viewFile.html.twig', [
+            'controller_name' => 'TaskController',
+            'task' => $task
+        ]);
     }
 }

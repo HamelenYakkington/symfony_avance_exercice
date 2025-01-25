@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Task Manager
+{% endblock %}
+
+{% block body %}
+	{% set actionViewFile = true %}
+	<div class="container">
+		<h1>Task List</h1>
+
+		{% for task in tasks %}
+			{% for fileName, content in task %}
+				{% include 'partials/displayFileContent.html.twig' %}
+			{% endfor %}
+		{% endfor %}
+	</div>
+{% endblock %}

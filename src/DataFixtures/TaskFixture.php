@@ -4,15 +4,37 @@ namespace App\DataFixtures;
 
 use App\Entity\Task;
 use App\Entity\User;
+use App\Service\TaskFileService;
+use App\Service\TaskService;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Exception\IOExceptionInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Filesystem\Path;
 
 class TaskFixture extends Fixture implements DependentFixtureInterface
 {
+
+    private Filesystem $filesystem;
+    private TaskFileService $taskFileService;
+    
+    public function __construct(Filesystem $filesystem, TaskFileService $taskFileService) {
+        $this->filesystem = $filesystem;
+        $this->taskFileService = $taskFileService;
+    }
     public function load(ObjectManager $manager): void
     {
+        try {
+            $this->filesystem->remove(['public/tasks']);
+        } catch (IOException $e) {
+            throw $e;
+        }
+        
+
+
         $user = $this->getReference('USER',User::class);
 
         $task1 = new Task();
@@ -40,7 +62,11 @@ class TaskFixture extends Fixture implements DependentFixtureInterface
         $manager->persist($task2);
         $manager->persist($task3);
 
+
         $manager->flush();
+        $this->taskFileService->FileServiceOnAttribute($task1,'FILE_CREATE');
+        $this->taskFileService->FileServiceOnAttribute($task2,'FILE_CREATE');
+        $this->taskFileService->FileServiceOnAttribute($task3,'FILE_CREATE');
     }
 
     public function getDependencies(): array
