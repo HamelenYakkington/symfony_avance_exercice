@@ -10,7 +10,9 @@ use Symfony\Component\Filesystem\Filesystem;
 class TaskFileService {
     public const DELETE   = 'FILE_DELETE';
     public const UPDATE   = 'FILE_UPDATE';
-    public const CREATE = 'FILE_CREATE';
+    public const CREATE   = 'FILE_CREATE';
+    public const LIST     = 'FILE_LIST';
+    public const GET      = 'FILE_GET';
     private Filesystem $filesystem;
     private ParameterBagInterface $parameterBag;
 
@@ -19,16 +21,24 @@ class TaskFileService {
         $this->parameterBag = $parameterBag;
     }
 
-    public function FileServiceOnAttribute(Task $task, string $attribute) : bool {
-        switch($attribute) {
-            case SELF::DELETE:
-                return $this->deleteTask($task->getId());
-            case SELF::CREATE:
-                return $this->createTask($task);
-            case SELF::UPDATE:
-                return $this->updateTask($task);
-            default:
-                return false;
+    public function FileServiceOnAttribute(mixed $option, string $attribute) : array|bool {
+        if($option instanceof Task) {
+            switch($attribute) {
+                case SELF::DELETE:
+                    return $this->deleteTask($option->getId());
+                case SELF::CREATE:
+                    return $this->createTask($option);
+                case SELF::UPDATE:
+                    return $this->updateTask($option);
+                default:
+                    return false;
+            }
+        }
+        if (is_string($option) && $attribute == SELF::GET) {
+            return $this->viewTaskFiles($option);
+        }
+        if ($attribute == SELF::LIST) {
+            return $this->listTasksFiles();
         }
     } 
 

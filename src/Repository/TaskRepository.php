@@ -44,4 +44,23 @@ class TaskRepository extends ServiceEntityRepository
     public function findOneBySlug(String $slug): ?Task {
         return $this->findOneBy(["slug" => $slug]);
     }
+
+    public function findOneByName($name): ?Task
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.name = :name')
+            ->setParameter('name', $name)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findAllName(): array
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.name')
+            ->getQuery()
+            ->getSingleColumnResult()
+        ;
+    }
 }
