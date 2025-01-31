@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-
+	{% include "partials/headTaskFile.html.twig" with {'titlePage': 'Edit Task', 'taskReturn' : '/task'} %}
 	{% include "partials/form/task.html.twig" %}
 
 {% endblock %}

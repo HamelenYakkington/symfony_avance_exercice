@@ -1,0 +1,29 @@
+<div class="row align-items-center">
+	{% if titlePage is defined %}
+		<div class="col d-flex justify-content-start align-items-center">
+			{% if taskReturn is defined %}
+				<a href="{{ taskReturn }}" class="text-info me-2 align-middle" title="return">
+					<i class="material-icons">keyboard_return
+					</i>
+				</a>
+			{% endif %}
+			<h2>{{ titlePage }}</h2>
+		</div>
+
+	{% endif %}
+	<div class="col d-flex justify-content-end ">
+		<div class="justify-content-around">
+			{% if createTask is defined and createTask %}
+				<a href="/task/create" class="btn btn-primary">
+					<i class="bi bi-plus-circle"></i>
+					Create a New Task
+				</a>
+			{% endif %}
+
+			<a href="/logout" class="btn btn-danger ms-3">
+				<i class="bi bi-plus-circle"></i>
+				Log out
+			</a>
+		</div>
+	</div>
+</div>

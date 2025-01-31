@@ -18,16 +18,24 @@
 	</head>
 	<body>
 		<div class="container">
-			{% for label, messages in app.flashes %}
-				{% for message in messages %}
-					<div class="flash-Alert alert alert-{{ label }} alert-dismissible fade show" role="alert">
-						{{ message }}
-						<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-							&times;
-						</button>
-					</div>
+			<div class="fixed-top ml-5 mr-5">
+				{% for label, messages in app.flashes %}
+					{% for message in messages %}
+						<div class="row flash-Alert alert alert-{{ label }} alert-dismissible fade show" role="alert">
+							<span class="col justify-content-start">
+								{{ message }}
+							</span>
+							<div class="col justify-content-end pr-0 pl-auto">
+								<button type="button" class="btn-Close bg-transparent border-0 text-secondary" data-bs-dismiss="alert" aria-label="Close">
+									<i class="material-icons">cancel
+									</i>
+								</button>
+
+							</div>
+						</div>
+					{% endfor %}
 				{% endfor %}
-			{% endfor %}
+			</div>
 			{% block body %}{% endblock %}
 		</div>
 	</body>

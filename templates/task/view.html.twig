@@ -4,6 +4,7 @@
 {% endblock %}
 
 {% block body %}
+{% include "partials/headTaskFile.html.twig" with {'titlePage': 'View Task', 'taskReturn' : '/task'} %}
 	{% if task is defined %}
 		<div>
 			{{ task.name }}

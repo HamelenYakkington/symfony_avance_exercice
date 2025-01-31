@@ -3,5 +3,6 @@
 {% block title %}Task Manager{% endblock %}
 
 {% block body %}
+{% include "partials/headTaskFile.html.twig" with {'titlePage': 'Create Task', 'taskReturn' : '/task'} %}
     {% include "partials/form/task.html.twig" %}
 {% endblock %}

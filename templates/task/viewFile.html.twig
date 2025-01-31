@@ -5,7 +5,7 @@
 
 {% block body %}
 	<div class="container">
-		<h1>Task List</h1>
+		{% include "partials/headTaskFile.html.twig" with {'titlePage': 'View Task\'s File', 'taskReturn' : '/task'} %}
 		{% for fileName, content in task %}
 			{% include 'partials/displayFileContent.html.twig' %}
 		{% endfor %}

@@ -27,10 +27,6 @@ security:
                         # by default, the feature allows 5 login attempts per minute
             login_throttling: null
 
-            # configure the maximum login attempts
-            login_throttling:
-                max_attempts: 3 
-
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
@@ -39,9 +35,9 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    # access_control:
-    #     - { path: ^/admin, roles: ROLE_ADMIN }
-    #     - { path: ^/category, roles: ROLE_USER }
+    access_control:
+        - { path: ^/task, roles: ROLE_USER }
+        # - { path: ^/category, roles: ROLE_USER }
 
 when@test:
     security:

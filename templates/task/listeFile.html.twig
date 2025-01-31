@@ -4,9 +4,9 @@
 {% endblock %}
 
 {% block body %}
+{% include "partials/headTaskFile.html.twig" with {'titlePage': 'View Task\'s Files', 'taskReturn' : '/task'} %}
 	{% set actionViewFile = true %}
 	<div class="container">
-		<h1>Task List</h1>
 
 		{% for task in tasks %}
 			{% for fileName, content in task %}
